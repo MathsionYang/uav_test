@@ -1,0 +1,11 @@
+-I/usr/include/qt4
+-I/usr/include/qt4/QtGui
+-I/usr/include/qt4/QtCore
+-I/home/hjx/test/cmake-build-debug
+-I/home/hjx/test/include
+-D$<$<NOT:$<CONFIG:Debug>>:QT_NO_DEBUG>
+-DQT_GUI_LIB
+-DQT_CORE_LIB
+-o
+/home/hjx/test/cmake-build-debug/include/moc_DevInitDlg.cxx
+/home/hjx/test/include/DevInitDlg.h
