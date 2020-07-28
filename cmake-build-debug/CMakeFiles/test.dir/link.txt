@@ -1,1 +1,0 @@
-/usr/bin/c++  -g  -rdynamic CMakeFiles/test.dir/main.cpp.o CMakeFiles/test.dir/baseInit.cpp.o CMakeFiles/test.dir/moc_baseInit.cxx.o  -o test   -L/home/hjx/NetSDK/lib  -Wl,-rpath,/home/hjx/NetSDK/lib -lQtGui -lQtCore -ldhnetsdk 

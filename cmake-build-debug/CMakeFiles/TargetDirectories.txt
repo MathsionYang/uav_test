@@ -1,3 +1,0 @@
-/home/hjx/test/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/hjx/test/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/hjx/test/cmake-build-debug/CMakeFiles/test.dir
