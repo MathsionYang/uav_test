@@ -1,47 +1,31 @@
 cmake_minimum_required(VERSION 3.0)
-project(test)
-
-# declaring files in your project
-
+project(uav_test)
+add_definitions(-std=c++11 -Wall -g)
+SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11 -pthread")
 set ( SOURCES
-      main.cpp
-      baseInit.cpp
- )
+ src/main.cpp
+ src/dahua_dev.cpp )
 
 set ( MOC_HEADERS
-      baseInit.h
+ include/dhconfigsdk.h
+ include/dhnetsdk.h
+ include/dahua_dev.h
 )
 
-#set ( UIS
-# src/DevInitDlg.ui
-# src/GetIPDlg.ui
-# src/InitializeDevDlg.ui
-#)
+# set(OpenCV_DIR "/opt/ros/kinetic/share/OpenCV-3.3.1-dev")
+find_package(OpenCV REQUIRED)
 
-#set ( RESOURCES
-# main.qrc
-#)
-
-# Next lines needed for building all Qt projects
-find_package( Qt4 REQUIRED )
-include( ${QT_USE_FILE} )
-add_definitions( ${QT_DEFINITIONS} )
-include_directories( ${CMAKE_BINARY_DIR} )
-#include_directories(${PROJECT_SOURCE_DIR}/src})
-include_directories("${PROJECT_SOURCE_DIR}/include")
-link_directories("$ENV{HOME}/NetSDK/lib")
-
-# Next, using precompiler, compiler and linker
-
-# using Qt meta-system (precompiler)
-QT4_ADD_RESOURCES( RES_SOURCES ${RESOURCES} )
-QT4_WRAP_UI( UI_HEADERS ${UIS} )
-QT4_WRAP_CPP( MOC_SRCS ${MOC_HEADERS} )
+include_directories( ${PROJECT_SOURCE_DIR}/include
+                     ${CMAKE_BINARY_DIR}
+                     ${PROJECT_SOURCE_DIR}/3rdparty/libav_Mat/include
+                     ${OpenCV_INCLUDE_DIRS})
+link_directories("$ENV{HOME}/NetSDK/lib"
+        ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libav_Mat/build)
 
 # compile
-add_executable( ${PROJECT_NAME} ${SOURCES} ${MOC_SRCS} ${RES_SOURCES} ${UI_HEADERS} )
-# or use line below instead, if you using Windows ™ Operating System.
-#add_executable( PROJECT_NAME WIN32 ${SOURCES} ${MOC_SRCS} ${RES_SOURCES} ${UI_HEADERS} )
-
-# build it (link libraries)
-target_link_libraries( ${PROJECT_NAME} ${QT_LIBRARIES} -ldhnetsdk)
+add_executable( ${PROJECT_NAME} ${SOURCES} )
+target_link_libraries( ${PROJECT_NAME}
+        -ldhnetsdk
+        ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libav_Mat/build/liblibav.so
+        ${OpenCV_LIBS}
+        ${CMAKE_THREAD_LIBS_INIT})
