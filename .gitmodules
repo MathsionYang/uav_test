@@ -1,0 +1,3 @@
+[submodule "3rdparty/robocon2018"]
+	path = 3rdparty/robocon2018
+	url = git@github.com:hjxwhy/robocon2018.git
