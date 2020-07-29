@@ -25,10 +25,11 @@ void CALLBACK DahuaDev::RealDataCallBackEx(LLONG lRealHandle, DWORD dwDataType, 
     // call decoding function
     DahuaDev* user = (DahuaDev*) dwUser;
     std::vector<uint8_t> buf;
-    buf.push_back(static_cast<uint8_t>(*pBuffer));
+    int n = sizeof(pBuffer) / sizeof(pBuffer[0]);
+    std::vector<uint8_t> buf;
+    memcpy(&buf[0],&pBuffer[0],n*sizeof(int));
     user->video_stream_recv_->saveToBuffer(buf);
-    std::cout << "receive real data, param: lRealHandle[%p], dwDataType[%d], pBuffer[%p], dwBufSize[%d]\n" <<
-              lRealHandle << dwDataType << pBuffer << dwBufSize;
+    std::cout << "receive real data"<< std::endl;
 }
 
 void DahuaDev::InitData(std::string ip) {
