@@ -14194,12 +14194,12 @@ typedef struct tagDEV_EVENT_TRAFFIC_TRAFFICCAR_INFO
 typedef struct tagNET_GPS_INFO
 {
     unsigned int                    nLongitude;         	// 经度(单位是百万分之一度)
-                                                            // 西经：0 - 180000000				实际值应为: 180*1000000 – dwLongitude
-                                                            // 东经：180000000 - 360000000		实际值应为: dwLongitude – 180*1000000
+                                                            // 西经：0 - 180000000				实际值应为: 180*1000000 ?C dwLongitude
+                                                            // 东经：180000000 - 360000000		实际值应为: dwLongitude ?C 180*1000000
                                                             // 如: 300168866应为（300168866 - 180*1000000）/1000000 即东经120.168866度
     unsigned int					nLatidude;              // 纬度(单位是百万分之一度)
-                                                            // 南纬：0 - 90000000				实际值应为: 90*1000000 – dwLatidude
-                                                            // 北纬：90000000 – 180000000		实际值应为: dwLatidude – 90*1000000
+                                                            // 南纬：0 - 90000000				实际值应为: 90*1000000 ?C dwLatidude
+                                                            // 北纬：90000000 ?C 180000000		实际值应为: dwLatidude ?C 90*1000000
 															// 如: 120186268应为 (120186268 - 90*1000000)/1000000 即北纬30. 186268度
     double                          dbAltitude;              // 高度,单位为米
     double                          dbSpeed;                 // 速度,单位km/H
@@ -15800,8 +15800,8 @@ typedef enum tagEM_FEATURE_VERSION
     EM_FEATURE_VERSION_SHANGTANG_FACE_244,                      // 商汤，人脸，244
     EM_FEATURE_VERSION_SHANGTANG_FACE_245,                      // 商汤，人脸，245
     
-    EM_FEATURE_VERSION_SHENMO_HUMAN_TRAFFIC_NON_2_4_2   = 181,  // 深瞐，人脸/机动车/非机动车，2.4.2
-    EM_FEATURE_VERSION_SHENMO_HUMAN_TRAFFIC_NON_2_5_7,          // 深瞐，人脸/机动车/非机动车，2.5.7
+    EM_FEATURE_VERSION_SHENMO_HUMAN_TRAFFIC_NON_2_4_2   = 181,  // 深?a，人脸/机动车/非机动车，2.4.2
+    EM_FEATURE_VERSION_SHENMO_HUMAN_TRAFFIC_NON_2_5_7,          // 深?a，人脸/机动车/非机动车，2.5.7
 } EM_FEATURE_VERSION;
 
 // 非机动车车牌图片信息
@@ -46428,7 +46428,7 @@ CLIENT_NET_API LLONG CALL_METHOD CLIENT_GetMediaEncryptCaps( LLONG lLoginID, con
 CLIENT_NET_API LLONG CALL_METHOD CLIENT_RealPlay(LLONG lLoginID, int nChannelID, HWND hWnd);
 
 // 开始实时监视--扩展
-// 多画面预览时nChannelID NVR设备填视频输出通道号
+// 多画面预览时nChannelID dahua netdaNVR设备填视频输出通道号
 CLIENT_NET_API LLONG CALL_METHOD CLIENT_RealPlayEx(LLONG lLoginID, int nChannelID, HWND hWnd, DH_RealPlayType rType = DH_RType_Realplay);
 //打开实时监视,若返回0表示打开失败
 CLIENT_NET_API LLONG CALL_METHOD CLIENT_StartRealPlay(LLONG lLoginID, int nChannelID, HWND hWnd, DH_RealPlayType rType, fRealDataCallBackEx cbRealData, fRealPlayDisConnect cbDisconnect, LDWORD dwUser, DWORD dwWaitTime = 10000);
@@ -52332,12 +52332,12 @@ typedef struct tagNET_WIFI_GPS_INFO
 {
 	NET_GPS_POSITION_RESULT			emPositioningResult;	// 定位结果
 	unsigned int 					nLongitude;				// 经度(单位是百万分之一度)
-															// 西经：0 - 180000000				实际值应为: 180*1000000 – dwLongitude
-															// 东经：180000000 - 360000000		实际值应为: dwLongitude – 180*1000000
+															// 西经：0 - 180000000				实际值应为: 180*1000000 ?C dwLongitude
+															// 东经：180000000 - 360000000		实际值应为: dwLongitude ?C 180*1000000
 															// 如: 300168866应为（300168866 - 180*1000000）/1000000 即东经120.168866度
 	unsigned int					nLatidude;				// 纬度(单位是百万分之一度)
-															// 南纬：0 - 90000000				实际值应为: 90*1000000 – dwLatidude
-															// 北纬：90000000 – 180000000		实际值应为: dwLatidude – 90*1000000
+															// 南纬：0 - 90000000				实际值应为: 90*1000000 ?C dwLatidude
+															// 北纬：90000000 ?C 180000000		实际值应为: dwLatidude ?C 90*1000000
 															// 如: 120186268应为 (120186268 - 90*1000000)/1000000 即北纬30. 186268度
 	unsigned int					nSpeed;					// 速度, 单位千分之一km/H
 	BYTE							reserved[112];			// 保留字段
@@ -54295,7 +54295,7 @@ typedef struct tagNET_IN_SET_ANALYSERESULT_INFO
     int                       nChannel;                         // 通道号 从0开始
     int                       nAnalyseResultCount;              // 车牌识别结果数量
     NET_ANALYSERESULT         stuAnalyseResult[MAX_PLATE_NUM];  // 车牌信息
-	unsigned int			  nFrameSequence;					// 幀序号,用于和后端IVS识别确认,必填
+	unsigned int			  nFrameSequence;					// ??序号,用于和后端IVS识别确认,必填
 	unsigned int			  nPhysicalLane;					// 物理车位号
 }NET_IN_SET_ANALYSERESULT_INFO;
 

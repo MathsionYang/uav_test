@@ -8,6 +8,8 @@
 #include "libav.hpp"
 #include <string>
 #include <thread>
+#include <iterator>
+#include <vector>
 class DahuaDev {
 public:
     DahuaDev(){
@@ -16,6 +18,7 @@ public:
     };
 
     ~DahuaDev(){
+        //fclose(file_record);
         CLIENT_Cleanup();//release sdk source
     }
 
@@ -24,15 +27,15 @@ public:
     static void CALLBACK DisConnectFunc(LLONG lLoginID,char *pchDVRIP, LONG nDVRPort, LDWORD dwUser);
 
     //init function
-    void InitData(std::string ip="192.168.2.147");
+    void InitData(std::string ip="192.168.123.34");
     //get image frame
     void getFrame();
     //get raw data
     void GetRawData();
     LLONG getHandel(){return login_handler_;};
-
+//    FILE* file_record;
+//    const char* file_record_sdk = "./file_record_sdk";
     LibAV* video_stream_recv_;
-
 
     BYTE raw_data_;
 private:

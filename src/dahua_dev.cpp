@@ -23,13 +23,24 @@ void CALLBACK DahuaDev::HaveReConnectFunc(LLONG lLoginID, char *pchDVRIP, LONG n
 void CALLBACK DahuaDev::RealDataCallBackEx(LLONG lRealHandle, DWORD dwDataType, BYTE *pBuffer, DWORD dwBufSize, LLONG param, LDWORD dwUser)
 {
     // call decoding function
+    //std::cout << "dwDataType" << dwDataType << std::endl;
+
     DahuaDev* user = (DahuaDev*) dwUser;
+//    fwrite(pBuffer+24,1,dwBufSize-32,user->file_record);
+//    fwrite(pBuffer,1,dwBufSize,user->file_record);
     std::vector<uint8_t> buf;
-    int n = sizeof(pBuffer) / sizeof(pBuffer[0]);
-    std::vector<uint8_t> buf;
-    memcpy(&buf[0],&pBuffer[0],n*sizeof(int));
-    user->video_stream_recv_->saveToBuffer(buf);
-    std::cout << "receive real data"<< std::endl;
+//    CLIENT_SaveRealData(lRealHandle,user->file_record_sdk);
+    if(dwDataType == 0) {
+//        //std::cout << "catch" << std::endl;
+        for (int i = 24; i < dwBufSize-8; i++)
+            buf.push_back(pBuffer[i]);
+        //std::cout<<(int)dwBufSize<<std::endl;
+//        for (int i=dwBufSize-4;i<dwBufSize;i++)
+//            std::cout<<std::hex<<(int)pBuffer[i]<<" ";
+        //std::cout<<std::oct<<std::endl;
+        user->video_stream_recv_->saveToBuffer(buf);
+    }
+    // std::cout << "receive real data, param: lRealHandle[%p], dwDataType[%d], pBuffer[%p], dwBufSize[%d]\n" ;
 }
 
 void DahuaDev::InitData(std::string ip) {
@@ -40,8 +51,7 @@ void DahuaDev::InitData(std::string ip) {
     char user_name[64] = "admin";
     int dev_port = 37777;
     char password[64] = "admin";
-    std::thread* t;
-    t = new std::thread([this]{video_stream_recv_ = new LibAV("abc",MANUAL_IO);});
+    video_stream_recv_ = new LibAV(MANUAL_IO);
     //int error = 0;
     //get number
     //bool numok;
@@ -72,22 +82,24 @@ void DahuaDev::InitData(std::string ip) {
         else{
             std::cout << "Login sucessful " << std::endl;
             GetRawData();
-            if(t->joinable())
-                t->join();
+            video_stream_recv_->init();
         }
 }
 
 void DahuaDev::GetRawData() {
     std::cout << "we are try to get image stream" << std::endl;
-    LLONG lRealHandle = CLIENT_RealPlayEx(login_handler_, 0, NULL, DH_RType_Realplay);
+    LLONG lRealHandle = CLIENT_RealPlayEx(login_handler_, 0, NULL, DH_RType_Realplay_2);
     if (NULL == lRealHandle)
     {
         std::cout << "CLIENT_RealPlayEx: failed! Error code: %x.\n" <<  CLIENT_GetLastError() << std::endl;
     }
     else
     {
-        DWORD dwFlag = REALDATA_FLAG_RAW_DATA; //rawData Flag
-        CLIENT_SetRealDataCallBackEx2(lRealHandle, &DahuaDev::RealDataCallBackEx, (LDWORD)this, dwFlag);
+        //file_record = fopen("./file_record","wba+");
+        //file_record_sdk = fopen("./file_record_sdk","wba+");
+        DWORD dwFlag = REALDATA_FLAG_RAW_DATA;
+        CLIENT_SetRealDataCallBackEx2(lRealHandle, &DahuaDev::RealDataCallBackEx, (LDWORD)this, dwFlag | REALDATA_FLAG_YUV_DATA | REALDATA_FLAG_DATA_WITH_FRAME_INFO);
+        std::cout << "dwFlag" << std::endl;
     }
 }
 
